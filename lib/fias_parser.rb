@@ -1,7 +1,7 @@
 require "fias_parser/version"
 require 'mechanize'
 require 'ox'
-require 'cocaine'
+require 'terrapin'
 
 module FiasParser
   class Document
@@ -76,21 +76,21 @@ module FiasParser
     end
 
     def check_executables
-      line = Cocaine::CommandLine.new( "wget", "-h" )
+      line = Terrapin::CommandLine.new( "wget", "-h" )
 
       begin
         line.run
-      rescue Cocaine::CommandNotFoundError => e
+      rescue Terrapin::CommandNotFoundError => e
         puts 'wget is not installed. Run "sudo apt-get install wget"'
 
         return false
       end
 
-      line = Cocaine::CommandLine.new( "unar", "-h" )
+      line = Terrapin::CommandLine.new( "unar", "-h" )
 
       begin
         line.run
-      rescue Cocaine::CommandNotFoundError => e
+      rescue Terrapin::CommandNotFoundError => e
         puts 'unar is not installed. Run "sudo apt-get install unar"'
 
         return false
@@ -123,7 +123,7 @@ module FiasParser
         return
       end
 
-      line = Cocaine::CommandLine.new( "wget", "--output-document=:out --post-data=:post_data :url" )
+      line = Terrapin::CommandLine.new( "wget", "--output-document=:out --post-data=:post_data :url" )
 
       line.run( {
         out: self.archive_file_path,
@@ -137,7 +137,7 @@ module FiasParser
 
       FileUtils.mkdir_p ( dir ) unless File.exists?( dir )
 
-      line = Cocaine::CommandLine.new( "unar", "-o :dir :archive" )
+      line = Terrapin::CommandLine.new( "unar", "-o :dir :archive" )
 
       line.run( {
         dir: dir,
