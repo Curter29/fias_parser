@@ -9,7 +9,7 @@ module FiasParser
       @block = block
       @batch = []
       @batch_size = options[:batch_size] || 10
-      
+
       @root_name = nil
       @item_name = nil
     end
@@ -19,10 +19,10 @@ module FiasParser
 
       if @root_name.nil?
         @root_name = name
-        
+
         return
       end
-      
+
       @item_name = name
       @item = {}
     end
@@ -35,15 +35,15 @@ module FiasParser
       self.yield_batch if name == @root_name && @batch.any?
 
       return if @item.nil? || name != @item_name
-      
+
       @batch << @item
 
       self.yield_batch if @batch.size >= @batch_size
     end
 
     def yield_batch
-      @block.call( @batch )      
-      @batch = []      
+      @block.call( @batch )
+      @batch = []
     end
   end
 
@@ -61,7 +61,7 @@ module FiasParser
       self.unpack
     end
 
-    def process( term, options = {}, &block ) 
+    def process( term, options = {}, &block )
       file_name = Dir.entries( self.archive_path ).find { |f| f =~ /#{term}/i }
 
       if file_name.nil?
@@ -84,7 +84,7 @@ module FiasParser
         puts 'wget is not installed. Run "sudo apt-get install wget"'
 
         return false
-      end 
+      end
 
       line = Cocaine::CommandLine.new( "unar", "-h" )
 
@@ -94,7 +94,7 @@ module FiasParser
         puts 'unar is not installed. Run "sudo apt-get install unar"'
 
         return false
-      end 
+      end
 
       true
     end
@@ -118,8 +118,8 @@ module FiasParser
       post_data['__EVENTTARGET'] = 'ctl00$contentPlaceHolder$downloadRadGrid$ctl00$ctl04$fullSZLinkButton'
 
       if File.exists?( self.archive_file_path )
-        puts "File '#{self.archive_file_path}' already exists."        
-        
+        puts "File '#{self.archive_file_path}' already exists."
+
         return
       end
 
@@ -150,7 +150,7 @@ module FiasParser
     end
 
     def get_archive_path
-      File.join( @base_dir, @date )
+      File.join( @base_dir ) #, @date )
     end
 
     def archive_file_path
